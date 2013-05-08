@@ -1,0 +1,12 @@
+﻿@if (ViewBag.NumberOfCompanies > 2)
+{
+    @:&nbsp; &nbsp; &nbsp;
+    using (Html.BeginForm("CompanyDropdown", "Home", FormMethod.Post, new { id = "switchCompanyForm" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.Hidden("Controller", ViewContext.ParentActionViewContext.Controller.ValueProvider.GetValue("controller").RawValue)
+        @Html.Hidden("Action", ViewContext.ParentActionViewContext.Controller.ValueProvider.GetValue("action").RawValue)
+        @Html.DropDownList("Companies")
+        <a href="javascript:document.getElementById('switchCompanyForm').submit()" class="smallButton">Switch</a>
+    }
+}

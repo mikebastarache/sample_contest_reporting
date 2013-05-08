@@ -1,0 +1,38 @@
+﻿@model www.Models.SetPermissionViewModel
+
+@{
+    ViewBag.Title = "SetPermissions";
+}
+
+<h2>Set Permissions</h2>
+
+
+Setting permissions for: <strong>@Model.User.UserEmail</strong>
+
+
+@using (Html.BeginForm())
+{
+    @Html.Hidden("userId", Model.User.UserId)
+    <p>
+        @*@foreach(string role in Model.Roles)
+        {
+            <input type="checkbox" name="@role" value="@role" @(Roles.IsUserInRole(Model.User.UserEmail, role) == true ? "checked" : "") /> @role<br />
+        }*@
+
+
+        @foreach(string role in Model.Roles)
+        {
+            @Html.CheckBox(role, (Roles.IsUserInRole(Model.User.UserEmail, role) == true ? true : false)) @role<br />
+        }
+    </p>
+    
+
+    <p>
+        <input type="submit" value="Save Permissions" />
+    </p>    
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+

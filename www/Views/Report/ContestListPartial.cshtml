@@ -1,0 +1,29 @@
+﻿@model IEnumerable<MMContest.Models.Contest>
+
+
+
+@foreach (var item in Model) {
+    <p>
+        <a href="javascript:void(0);" class="link" data-href="/Report/ContestResultsPartial/@item.ContestId">@item.Name</a><br />
+        <em>@Html.DisplayFor(modelItem => item.DateStart) - @Html.DisplayFor(modelItem => item.DateEnd)</em>
+    </p>
+}
+
+
+<div id="error"></div>
+
+<script>
+    $(document).ready(function(){
+        $('.link').click(function () {
+            var href = $(this).attr('data-href');
+            $("#right-pane-contest").load(href, function (response, status, xhr) {
+                if (status == "error") {
+                    var msg = "Sorry but there was an error: ";
+                    $("#error").html("<hr /><b>Error Response:</b><br />" + msg + xhr.status + " " + xhr.statusText);
+                }
+            });
+        });
+    });
+</script>
+
+ 

@@ -1,0 +1,46 @@
+﻿@model www.Models.ViewModels.CompanyView
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data" })) 
+{
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Company</legend>
+
+        @Html.HiddenFor(model => model.CompanyId)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.CompanyName)
+        </div>
+        <div class="editor-field">
+            @Html.DisplayFor(model => model.CompanyName)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.CompanyLogo)
+        </div>
+        <div class="editor-field">
+            <img src="/Content/images/CompanyLogos/@ViewBag.logoFileName" border="0" alt="@Html.DisplayFor(model => model.CompanyName)" />
+            @Html.TextBoxFor(model => model.CompanyLogo, new { type = "file" })
+            @Html.ValidationMessageFor(model => model.CompanyLogo)
+        </div>
+
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

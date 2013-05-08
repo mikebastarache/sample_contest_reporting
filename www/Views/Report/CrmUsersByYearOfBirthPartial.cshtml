@@ -1,0 +1,69 @@
+﻿@model IEnumerable<www.Models.ViewModels.CrmUsersByYearOfBirthView>
+
+<h3 style="margin-left:10px;">CRM Users by Year of Birth</h3>
+<br class="clear-fix" />
+
+
+<div style="width:48%; float:left; margin-left:10px;">
+    @(Html.Kendo().Grid(Model)
+        .Name("Grid2")
+            .DataSource(dataSource  => dataSource 
+                    .Ajax()
+                    .Read(read  => read.Action("CrmUsersByYearOfBirthRead", "Report"))
+            )
+        .HtmlAttributes(new { style = "height: 453px" })
+        //.ToolBar(toolBar =>
+        //                toolBar.Custom()
+        //                    .Text("Export To CSV")
+        //                    .HtmlAttributes(new { id = "export" })
+        //                    .Url(Url.Action("ExportCsv", "Report", new { page = "1", pageSize = "10", filter = "Province~eq~'NB'", sort = "UserId-asc" }))
+        //                    )
+        //.ToolBar(toolBar =>
+        //                toolBar.Custom()
+        //                    .Text("Export To Excel")
+        //                    .HtmlAttributes(new { id = "export" })
+        //                    .Url(Url.Action("ExportExcel", "Report", new { page = "1", pageSize = "10", filter = "UserId~gt~0", sort = "UserId-asc" }))
+        //                    )
+        //.ToolBar(toolBar => 
+        //                toolBar.Custom()
+        //                    .Text("Export To PDF")
+        //                    .HtmlAttributes(new { id = "export" })
+        //                    .Url(Url.Action("ExportPdf", "Report", new { page = "1", pageSize = "10", filter = "UserId~gt~0", sort = "UserId-asc" }))
+        //            )
+        .Columns(columns =>
+        {
+            columns.Bound(p => p.YearOfBirth);
+            columns.Bound(p => p.TotalUsers);
+        })
+        .Pageable()
+        .Sortable()
+        .Scrollable()
+        .Filterable()
+    )
+</div>
+
+<div style="width:48%; float:right;">
+    <div class="chart-wrapper">
+        @(Html.Kendo().Chart(Model)
+              .Name("chart")
+              .Title("CRM Users by Year of Birth")
+              .Legend(legend => legend
+                  .Position(ChartLegendPosition.Bottom)
+              )
+              .Series(series => {
+                  series.Bar(model => model.TotalUsers)
+                      .Name("Year of Birth");
+              })
+              .CategoryAxis(axis => axis
+                  .Categories(model => model.YearOfBirth)
+                  .Labels(labels => labels.Step(5))
+              )
+              .ValueAxis(axis => axis.Numeric()
+                  .Labels(labels => labels.Format("{0:n0}"))
+              )
+              .Tooltip(tooltip => tooltip
+                  .Template("#= category #: #= kendo.format('{0:n0}', value)# Users").Visible(true)
+              )
+         )
+    </div>
+</div>      

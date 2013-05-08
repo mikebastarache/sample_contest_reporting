@@ -1,0 +1,6 @@
+﻿@if (Request.Cookies["MyUserSettings"] != null && Request.Cookies["MyUserSettings"]["companyName"] != "")
+{
+    var logoFileName = "logo_" + Request.Cookies["MyUserSettings"]["companyName"].ToString() + ".png";
+    <img src="/Content/images/CompanyLogos/@logoFileName" alt="@Request.Cookies["MyUserSettings"]["companyName"].ToString()" border="0" />
+    <span style="font-weight:700; font-size:18px; padding-left:10px;">@Request.Cookies["MyUserSettings"]["companyName"].ToString()</span>
+}

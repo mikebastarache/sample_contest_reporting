@@ -1,0 +1,123 @@
+﻿@model IEnumerable<www.Models.ViewModels.CrmUserView>
+
+<strong>All CRM Users</strong>
+
+<script type="text/x-kendo-template" id="template">
+    <div id="details-container">
+        <h2>#= Salutation # #= FirstName # #= LastName #</h2>
+        <table>
+        <tr>
+            <td><strong>Email:</strong></td>
+            <td><em>#= Email #</em></td>
+        </tr>
+        <tr>
+            <td><strong>Language:</strong></td>
+            <td><em>#= Language #</em></td>
+        </tr>
+        <tr>
+            <td><strong>Year Of Birth:</strong></td>
+            <td><em>#= YearOfBirth #</em></td>
+        </tr>
+        <tr>
+            <td><strong>Address 1:</strong></td>
+            <td>#= Address1 #</td>
+        </tr>
+        
+        <tr>
+            <td><strong>Address 2:</strong></td>
+            <td>#= Address2 #</td>
+        </tr>
+        <tr>
+            <td><strong>City:</strong></td>
+            <td>#= City #</td>
+        </tr>
+        <tr>
+            <td><strong>Province:</strong></td>
+            <td>#= Province #</td>
+        </tr>
+        <tr>
+            <td><strong>Postal Code:</strong></td>
+            <td>#= PostalCode #</td>
+        </tr>
+        <tr>
+            <td><strong>Telephone:</strong></td>
+            <td>#= Telephone #</td>
+        </tr>
+        <tr>
+            <td><strong>Date Account Created:</strong></td>
+            <td>#= kendo.format('{0:MMM dd, yyyy HH:mm:ss}', DateCreated)#</td>
+        </tr>
+        <tr>
+            <td><strong>Date Account Last Modified:</strong></td>
+            <td>#= kendo.format('{0:MMM dd, yyyy HH:mm:ss}', DateModified)#</td>
+        </tr>
+        </table>
+    </div>
+</script>
+
+<script type="text/javascript">
+    var detailsTemplate = kendo.template($("#template").html());
+
+    function showDetails(e) {
+        e.preventDefault();
+                
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        var wnd = $("#Details").data("kendoWindow");
+
+        wnd.content(detailsTemplate(dataItem));
+        wnd.center().open();
+    }
+</script>
+
+
+@(Html.Kendo().Grid(Model)
+    .Name("Grid")
+        .DataSource(dataSource  => dataSource 
+                .Ajax()
+                .Read(read  => read.Action("CrmUsersRead", "Report"))
+        )
+    .HtmlAttributes(new { style = "height: 505px" })
+    //.ToolBar(toolBar =>
+    //                toolBar.Custom()
+    //                    .Text("Export To CSV")
+    //                    .HtmlAttributes(new { id = "export" })
+    //                    .Url(Url.Action("ExportCsv", "Report", new { page = "1", pageSize = "10", filter = "Province~eq~'NB'", sort = "UserId-asc" }))
+    //                    )
+    //.ToolBar(toolBar =>
+    //                toolBar.Custom()
+    //                    .Text("Export To Excel")
+    //                    .HtmlAttributes(new { id = "export" })
+    //                    .Url(Url.Action("ExportExcel", "Report", new { page = "1", pageSize = "10", filter = "UserId~gt~0", sort = "UserId-asc" }))
+    //                    )
+    //.ToolBar(toolBar => 
+    //                toolBar.Custom()
+    //                    .Text("Export To PDF")
+    //                    .HtmlAttributes(new { id = "export" })
+    //                    .Url(Url.Action("ExportPdf", "Report", new { page = "1", pageSize = "10", filter = "UserId~gt~0", sort = "UserId-asc" }))
+    //            )
+    .Columns(columns =>
+    {
+        columns.Bound(p => p.UserId);
+        columns.Bound(p => p.FirstName);
+        columns.Bound(p => p.LastName);
+        columns.Bound(p => p.Email);
+        columns.Bound(p => p.Province);
+        columns.Command(command => command.Custom("ViewDetails").Click("showDetails"));
+
+    })
+    .Pageable()
+    .Sortable()
+    .Scrollable()
+    .Filterable()
+)
+
+
+@(Html.Kendo().Window().Name("Details")
+    .Title("User Details")
+    .Visible(false)
+    .Modal(true)
+    .Draggable(true)
+    .Width(600)       
+)
+
+

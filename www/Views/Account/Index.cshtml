@@ -1,0 +1,59 @@
+﻿@model IEnumerable<www.Models.UserProfile>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p class="message-success">@ViewBag.StatusMessage</p>
+
+<p>
+    @Html.ActionLink("Create New Account", "Register")
+</p>
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.UserEmail)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserFirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserLastName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserEmail)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserFirstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserLastName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.UserId }) 
+            | @Html.ActionLink("Details", "Details", new { id=item.UserId })
+            | @Html.ActionLink("Change Password", "ChangePassword", new { id=item.UserId })
+            @if (User.IsInRole("CanManagePermissions"))
+            {
+                <text>
+                | @Html.ActionLink("Set Permissions", "SetPermissions", new { id=item.UserId })
+                </text>
+            }
+            @if (item.UserId != ViewBag.FirstUserId && item.UserId != (int)ViewBag.CurrentUserId) 
+            {
+                <text>
+                | @Html.ActionLink("Delete", "Delete", new { id=item.UserId })
+                </text>
+            }
+        </td>
+    </tr>
+}
+
+</table>

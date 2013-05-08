@@ -1,0 +1,72 @@
+﻿@model IEnumerable<www.Models.Company>
+
+@{
+    ViewBag.Title = "Dashboard";
+}
+
+<h2>Your Dashboard</h2>
+<p>Welcome to the <strong>Modern Media Contest Reporting Platform</strong>.</p>
+
+<div id="dashboardLeft" style="float:left; width:68%;">
+    <h3>Select a Company</h3>
+    @using (Html.BeginForm(null, null, FormMethod.Post)) 
+    {
+        @Html.ValidationSummary(true)
+
+        <fieldset>
+            <legend>Select Company</legend>
+            
+            <table class="companies">
+                
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                
+                                
+                                @Html.RadioButtonFor(modelItem => item.CompanyName, item.CompanyName) <img src="/Content/images/CompanyLogos/@Html.DisplayFor(modelItem => item.CompanyLogo)" border="0" alt="@Html.DisplayFor(modelItem => item.CompanyName)" />
+                            </td>
+                        </tr>
+                    }                
+            </table>
+
+            <p>
+                <input type="submit" value="Select Company" />
+            </p>
+        </fieldset>
+    }
+</div>
+
+<div id="dashboardRight" style="float:right; width:28%;">
+    <h3 class="tableCenter">Administration Tasks</h3>
+    <table class="tableCenter">
+        <tr>
+            <td>
+                @if (Roles.IsUserInRole("CanManageCompanies"))
+                {
+                    @Html.ActionImage(Url.Content("~/Content/images/Icons/Briefcase128.png"), "Manage Companies", "Index", "Company")<br />
+                    @Html.ActionLink("Manage Companies", "Index", "Company")
+                }
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @if (Roles.IsUserInRole("CanManageUsers"))
+                {
+                    @Html.ActionImage(Url.Content("~/Content/images/Icons/Users128.png"), "Manage Users", "Index", "Account")<br />
+                    @Html.ActionLink("Manage Users", "Index", "Account")
+                }
+            </td>
+        </tr>
+    </table>
+</div>
+
+<section id="companies">
+    
+    
+    
+</section>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

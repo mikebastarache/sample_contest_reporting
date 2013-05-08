@@ -1,0 +1,128 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<script>
+    function resizeSplitter(e) {
+        $(e.contentElement).children(".k-splitter").data("kendoSplitter").trigger("resize");
+    }
+</script>
+
+<div id="reports">
+    @(Html.Kendo().TabStrip()
+          .Name("tabstrip")
+          .Events(events => events
+              .Activate("resizeSplitter")
+          )
+          .Items(tabstrip =>
+                     {
+                         tabstrip.Add().Text("CRM Reports")
+                             .Selected(true)
+                             .Content(@<text>
+                                           @(Html.Kendo().Splitter()
+                                                 .Name("splitterCrm")
+                                                 .HtmlAttributes(new { style = "height:600px;" })
+                                                 .Panes(panes =>
+                                                            {
+                                                                panes.Add()
+                                                                    .HtmlAttributes(new { id = "left-pane-crm" })
+                                                                    .Size("200px")
+                                                                    .Collapsible(true)
+                                                                    .LoadContentFrom("CrmReportListPartial", "Report");
+
+                                                                panes.Add()
+                                                                    .HtmlAttributes(new { id = "right-pane-crm" })
+                                                                    .LoadContentFrom("CrmUsersByProvincePartial", "Report");
+                                                            }))
+                                       </text>);
+
+                         tabstrip.Add().Text("Contest Reports")                             
+                             .Content(@<text>
+                                           @(Html.Kendo().Splitter()
+                                                 .Name("splitterContest")
+                                                 .HtmlAttributes(new { style = "height:600px;" })
+                                                 .Panes(panes =>
+                                                            {
+                                                                panes.Add()
+                                                                    .HtmlAttributes(new { id = "left-pane-contest" })
+                                                                    .Size("25%")
+                                                                    .Collapsible(false)
+                                                                    .LoadContentFrom("ContestListPartial", "Report");
+
+                                                                panes.Add()
+                                                                    .HtmlAttributes(new { id = "right-pane-contest" })
+                                                                    .Size("75%")
+                                                                    .Collapsible(false)
+                                                                    .LoadContentFrom("WelcomePartial", "Report");
+                                                            }))
+                                       </text>);
+
+                         tabstrip.Add().Text("Ad-hoc Reports")
+                             .Content(@<text>
+                                           @(Html.Kendo().Splitter()
+                                                 .Name("splitterAdhoc")
+                                                 .HtmlAttributes(new { style = "height:600px;" })
+                                                 .Panes(panes =>
+                                                 {
+                                                     panes.Add()
+                                                         .HtmlAttributes(new { id = "left-pane-adhoc" })
+                                                         .Size("25%")
+                                                         .Collapsible(false)
+                                                         .Content("<h3>Ad-hoc Reports</h3><p>Left Pane</p>");
+
+                                                     panes.Add()
+                                                         .HtmlAttributes(new { id = "right-pane-adhoc" })
+                                                         .Size("75%")
+                                                         .Collapsible(false)
+                                                         .Content("<h3>Ad-hoc Reports</h3><p>Right Pane</p>");
+                                                 }))
+                                       </text>);
+
+                         tabstrip.Add().Text("Scheduled Reports")
+                             .Content(@<text>
+                                           @(Html.Kendo().Splitter()
+                                                 .Name("splitterScheduled")
+                                                 .HtmlAttributes(new { style = "height:600px;" })
+                                                 .Panes(panes =>
+                                                 {
+                                                     panes.Add()
+                                                         .HtmlAttributes(new { id = "left-pane-scheduled" })
+                                                         .Size("25%")
+                                                         .Collapsible(false)
+                                                         .Content("<h3>Scheduled Reports</h3><p>Left Pane</p>");
+
+                                                     panes.Add()
+                                                         .HtmlAttributes(new { id = "right-pane-scheduled" })
+                                                         .Size("75%")
+                                                         .Collapsible(false)
+                                                         .Content("<h3>Scheduled Reports</h3><p>Right Pane</p>");
+                                                 }))
+                                       </text>);
+
+                         tabstrip.Add().Text("Export Reports")
+                             .Content(@<text>
+                                           @(Html.Kendo().Splitter()
+                                                 .Name("splitterExport")
+                                                 .HtmlAttributes(new { style = "height:600px;" })
+                                                 .Panes(panes =>
+                                                 {
+                                                     panes.Add()
+                                                         .HtmlAttributes(new { id = "left-pane-export" })
+                                                         .Size("25%")
+                                                         .Collapsible(false)
+                                                         .Content("<h3>Export Reports</h3><p>Left Pane</p>");
+
+                                                     panes.Add()
+                                                         .HtmlAttributes(new { id = "right-pane-export" })
+                                                         .Size("75%")
+                                                         .Collapsible(false)
+                                                         .Content("<h3>Export Reports</h3><p>Right Pane</p>");
+                                                 }))
+                                       </text>);
+
+                     })
+          )
+</div>
+
+
+

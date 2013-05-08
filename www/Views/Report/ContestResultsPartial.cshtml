@@ -1,0 +1,67 @@
+﻿<script>
+    function startChange() {
+        var endPicker = $("#end").data("kendoDateTimePicker"),
+            startDate = this.value();
+
+        if (startDate) {
+            startDate = new Date(startDate);
+            startDate.setDate(startDate.getDate() + 1);
+            endPicker.min(startDate);
+        }
+    }
+
+    function endChange() {
+        var startPicker = $("#start").data("kendoDateTimePicker"),
+            endDate = this.value();
+
+        if (endDate) {
+            endDate = new Date(endDate);
+            endDate.setDate(endDate.getDate() - 1);
+            startPicker.max(endDate);
+        }
+    }
+</script>
+
+<h3 style="margin-left:10px;">Contest Results</h3>
+<hr />
+
+<div style="margin-left:10px;">
+    @using (Html.BeginForm("ExportContestReportCsv", "Report", FormMethod.Post))
+    {
+        <text>
+            <br />
+            <h4>Select Date Range</h4>
+            <span style="font-size: 1.4em; font-weight: 600; color: #aaa; font-style: italic; padding-left: 25px;">Start date:</span>
+            @(Html.Kendo().DateTimePicker()
+                    .Name("start")
+                    .Value(DateTime.Today)
+                    .Max(DateTime.Today)
+                    .ParseFormats(new string[] {"MM/dd/yyyy"})
+                    .Events(e => e.Change("startChange"))
+                    )
+
+            <span style="font-size: 1.4em; font-weight: 600; color: #aaa; font-style: italic; padding-left: 3em;">End date:</span>
+            @(Html.Kendo().DateTimePicker()
+                    .Name("end")
+                    .Value(DateTime.Today)
+                    .Min(DateTime.Today)
+                    .ParseFormats(new string[] {"MM/dd/yyyy"})
+                    .Events(e => e.Change("endChange"))
+                    )
+
+
+            <h4>Select Report to Generate</h4>
+            @Html.RadioButton("report", "AdultVotes", new {style = "margin-left:25px;"}) <span style="font-size: 1.4em; font-weight: 600; color: #aaa; font-style: italic; padding-left: 10px;">Adult Votes</span> <br />
+            @Html.RadioButton("report", "MinorVotes", new {style = "margin-left:25px;"}) <span style="font-size: 1.4em; font-weight: 600; color: #aaa; font-style: italic; padding-left: 10px;">Minor Votes</span> <br />
+            @Html.RadioButton("report", "ContestEntries", new {style = "margin-left:25px;"}) <span style="font-size: 1.4em; font-weight: 600; color: #aaa; font-style: italic; padding-left: 10px;">Contest Entries</span> <br />
+            @Html.RadioButton("report", "AdultVoteTallyByDateRange", new {style = "margin-left:25px;"}) <span style="font-size: 1.4em; font-weight: 600; color: #aaa; font-style: italic; padding-left: 10px;">Adult Vote Tally By Date Range</span> <br />
+            @Html.RadioButton("report", "MinorVoteTallyByDateRange", new {style = "margin-left:25px;"}) <span style="font-size: 1.4em; font-weight: 600; color: #aaa; font-style: italic; padding-left: 10px;">Minor Vote Tally By Date Range</span> <br />
+            @Html.RadioButton("report", "AdultVoteTallyCumulative", new {style = "margin-left:25px;"}) <span style="font-size: 1.4em; font-weight: 600; color: #aaa; font-style: italic; padding-left: 10px;">Adult Vote Tally Cumulative</span> <em>(Date Range not required)</em><br />
+            @Html.RadioButton("report", "MinorVoteTallyCumulative", new {style = "margin-left:25px;"}) <span style="font-size: 1.4em; font-weight: 600; color: #aaa; font-style: italic; padding-left: 10px;">MinorVote Tally Cumulative</span> <em>(Date Range not required)</em><br />
+    
+            <br /><br />
+            <input type="submit" value="Generate Report"/>
+        </text>
+    }
+        
+</div>

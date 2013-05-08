@@ -1,0 +1,27 @@
+﻿<table>
+    <tr>
+        <td>
+            <a href="javascript:void(0);" class="link" data-href="/Report/CrmUsersByProvincePartial">Users by Province</a><br />
+            <a href="javascript:void(0);" class="link" data-href="/Report/CrmUsersByGenderPartial">Users by Gender</a><br />
+            <a href="javascript:void(0);" class="link" data-href="/Report/CrmUsersByYearOfBirthPartial">Users by Year of Birth</a><br />
+            <a href="javascript:void(0);" class="link" data-href="/Report/CrmUsersPartial">All CRM Users</a><br />
+        </td>
+    </tr>
+</table>
+
+
+<div id="error"></div>
+
+<script>
+    $(document).ready(function(){
+        $('.link').click(function () {
+            var href = $(this).attr('data-href');
+            $("#right-pane-crm").load(href, function (response, status, xhr) {
+                if (status == "error") {
+                    var msg = "Sorry but there was an error: ";
+                    $("#error").html("<hr /><b>Error Response:</b><br />" + msg + xhr.status + " " + xhr.statusText);
+                }
+            });
+        });
+    });
+</script>
